@@ -17,6 +17,7 @@ while(my $file=<>) {
 	        my $cont=<$f>; chomp($cont);
 		$pkg.=$cont;
 	    }
+	    $pkg=~s/\.\d{4,6}//; # drop occasional maintenance IDs
 	    $pkgs{$bugid}->{$pkg}=1;
         }
     }
