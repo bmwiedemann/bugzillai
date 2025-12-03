@@ -1,0 +1,13 @@
+5GB mails in
+~/Maildir/.opensuse.bugs/cur
+
+need to extract alpaca format json
+
+[
+  {
+    "instruction": "Analyze the bugzilla snippet enclosed in [BUG] and [/BUG] tokens to determine which package will need a fix. Answer only with package names, separated by space",
+    "input": "[BUG]Summary: XX\nBody: XX[/BUG]",
+    "output": "bash"
+  },
+...
+]
