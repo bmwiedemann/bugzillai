@@ -3,10 +3,10 @@
 use strict;
 
 our $bugid;
+my %pkgs=();
 while(my $file=<>) {
     chomp($file);
     open(my $f, "<", "/home/bernhard/Maildir/.opensuse.bugs/cur/".$file) or die "error reading $file : $!";
-    my %pkgs=();
     while(<$f>) {
 	chomp;
 	#print;
@@ -17,10 +17,12 @@ while(my $file=<>) {
 	        my $cont=<$f>; chomp($cont);
 		$pkg.=$cont;
 	    }
-	    $pkgs{$pkg}=1;
+	    $pkgs{$bugid}->{$pkg}=1;
         }
     }
-    foreach my $pkg (sort(keys(%pkgs))) {
+}
+foreach my $bugid (sort {$a<=>$b} (keys(%pkgs))) {
+    foreach my $pkg (sort(keys(%{$pkgs{$bugid}}))) {
         print "$bugid $pkg\n"
     }
 }
