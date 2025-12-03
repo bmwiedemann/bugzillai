@@ -4,7 +4,7 @@ This is a project to implement AI to guess from a bugzilla description
 which package will need a fix.
 
 For training we can rely on training data since 2013 from mails
-that were sent to bugs ML and got updates from Bernhard's [obsbugzilla](https://github.com/bmwiedemann/obsbugzilla/) bot.
+that were sent to bugs ML and got updates from Bernhard's [obsbugzilla](https://github.com/bmwiedemann/obsbugzilla/) bot. There are around 13k entries.
 
 ## How
 
