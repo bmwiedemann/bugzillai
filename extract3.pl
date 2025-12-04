@@ -1,19 +1,23 @@
 #!/usr/bin/perl -w
+# zypper in perl-Email-Simple perl-JSON-XS || apt install libemail-simple-perl libjson-xs-perl
 # usage: perl extract3.pl bugzilla-pkg.list
 use strict;
 use Email::Simple;
+use JSON::XS;
 
 # look for mails with "[Bug NNNNNNN] New: "
+
+sub processbugmail($$$);
 
 my %bugid=();
 while(<>) {
     chomp();
     my($bugid,$pkg)=split(' ');
-    print "$bugid\n";
+    #print "$bugid\n";
     push(@{$bugid{$bugid}}, $pkg);
 }
-#for my $file (glob('/home/bernhard/Maildir/.opensuse.bugs/cur/*')) {
-for my $file (glob('/home/bernhard/Maildir/.opensuse.bugs/cur/1391793774.30658_0.vm12b.zq1.de:2,')) {
+#for my $file (glob('/home/bernhard/Maildir/.opensuse.bugs/cur/1391793774.30658_0.vm12b.zq1.de:2,')) {
+for my $file (glob('/home/bernhard/Maildir/.opensuse.bugs/cur/*')) {
     open(my $f, '<', $file) or die "error reading $file : $!";
     while(<$f>) {
         if(m/Subject: \[Bug (\d+)\] New: /) {
@@ -30,7 +34,7 @@ sub processbugmail($$$)
 {
     my($bugid, $fd, $file)=@_;
     my @pkgs = @{$bugid{$bugid}};
-    print "$bugid @pkgs $fd $file\n";
+    #print "$bugid @pkgs $fd $file\n";
     local $/=undef;
     my $text=<$fd>;
     my $email = Email::Simple->new($text);
@@ -43,5 +47,5 @@ sub processbugmail($$$)
     $summary =~s/ +$//;
     s/.*User-Agent: [^\n]*\n*//s;
     my $body = $_;
-    print "S:$summary B:$body";
+    print encode_json({summary=>$summary, body=>$body, pkgs=>\@pkgs}),"\n";
 }
