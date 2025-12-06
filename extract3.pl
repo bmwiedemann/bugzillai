@@ -47,6 +47,7 @@ sub processbugmail($$$)
     /Summary: ([^\n]*)/ and $summary=$1;
     $summary =~s/ +$//;
     s/.*User-Agent: [^\n]*\n*//s;
+    s/\@([a-z]+\.[a-z])/-at-$1/g; # hide email addrs
     my $body = $_;
     print $jsoncoder->encode({summary=>$summary, body=>$body, pkgs=>\@pkgs}),"\n";
 }
