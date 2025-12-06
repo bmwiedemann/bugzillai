@@ -9,6 +9,7 @@ use JSON::XS;
 
 sub processbugmail($$$);
 
+our $jsoncoder=JSON::XS->new->canonical;
 my %bugid=();
 while(<>) {
     chomp();
@@ -47,5 +48,5 @@ sub processbugmail($$$)
     $summary =~s/ +$//;
     s/.*User-Agent: [^\n]*\n*//s;
     my $body = $_;
-    print encode_json({summary=>$summary, body=>$body, pkgs=>\@pkgs}),"\n";
+    print $jsoncoder->encode({summary=>$summary, body=>$body, pkgs=>\@pkgs}),"\n";
 }
